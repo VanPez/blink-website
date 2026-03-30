@@ -85,7 +85,7 @@ async function getInstagramMediaUrls(instagramId, token) {
   // This gives us the permanent(ish) CDN links to hotlink from the blog
   try {
     const data = await new Promise((resolve, reject) => {
-      const url = `https://graph.facebook.com/v19.0/${instagramId}?fields=media_url,thumbnail_url,media_type,children{media_url,media_type}&access_token=${token}`;
+      const url = `https://graph.facebook.com/v19.0/${instagramId}?fields=media_url,thumbnail_url,media_type,permalink,children{media_url,media_type}&access_token=${token}`;
       https.get(url, { headers: { 'User-Agent': 'Blink-Journal' } }, (res) => {
         let body = '';
         res.on('data', chunk => body += chunk);
@@ -96,7 +96,7 @@ async function getInstagramMediaUrls(instagramId, token) {
       }).on('error', reject);
     });
 
-    const result = { images: [], thumbnailUrl: null, mediaType: data.media_type };
+    const result = { images: [], thumbnailUrl: null, mediaType: data.media_type, permalink: data.permalink || null };
 
     if (data.media_type === 'VIDEO') {
       result.thumbnailUrl = data.thumbnail_url || null;
@@ -147,23 +147,18 @@ async function publishToJournal(opts) {
     const now = new Date();
     const slug = makeSlug(opts.caption, now);
 
-    // Fetch actual IG CDN URLs for the published post
+    // Fetch actual IG CDN URLs and permalink for the published post
     let images = [];
     let thumbnailUrl = null;
+    let instagramUrl = null;
 
     if (opts.instagramId && token) {
       console.log(`[Journal] Fetching IG media URLs for ${opts.instagramId}...`);
       const media = await getInstagramMediaUrls(opts.instagramId, token);
       images = media.images;
       thumbnailUrl = media.thumbnailUrl;
+      instagramUrl = media.permalink || null;
     }
-
-    // Build the Instagram URL
-    // Note: We can construct a permalink from the shortcode, but the easiest
-    // approach is to use the media ID — Instagram redirects /p/ based on this
-    const instagramUrl = opts.instagramId
-      ? `https://www.instagram.com/p/${opts.instagramId}/`
-      : null;
 
     // Create the post JSON file
     const postData = {
