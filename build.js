@@ -457,7 +457,7 @@ function navHtml(activePage, basePath = '') {
 
   return `<nav>
   <a href="${prefix}/index.html" class="nav-logo">
-    <img src="${prefix}/assets/blink-logo.png" alt="Blink" onerror="this.parentElement.innerHTML='<span style=&quot;font-family:Cormorant Garamond,serif;font-size:1.6rem;font-weight:300;font-style:italic;color:var(--dark)&quot;>Blink</span>'">
+    <img src="${prefix}/assets/blink-logo.jpg" alt="Blink" onerror="this.parentElement.innerHTML='<span style=&quot;font-family:Cormorant Garamond,serif;font-size:1.6rem;font-weight:300;font-style:italic;color:var(--dark)&quot;>Blink</span>'">
   </a>
   <ul class="nav-links">
     <li><a href="${aboutHref}">About</a></li>
