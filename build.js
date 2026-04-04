@@ -23,6 +23,19 @@ function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
+function copyDirRecursive(src, dest) {
+  ensureDir(dest);
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirRecursive(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 function slugify(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 }
@@ -137,6 +150,10 @@ nav {
 .nav-links a:hover { color: var(--cyan); }
 .nav-links a.active { color: var(--cyan); }
 .hamburger { display: none; }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.cart-button { position: relative; background: none; border: none; cursor: pointer; color: var(--dark); transition: color 0.2s; padding: 0.3rem; }
+.cart-button:hover { color: var(--cyan); }
+.cart-count { position: absolute; top: -4px; right: -6px; background: var(--cyan); color: white; font-size: 0.55rem; font-family: "Outfit", sans-serif; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 500; }
 @media (max-width: 900px) {
   nav { padding: 0; }
   .nav-logo img { height: 60px; }
@@ -453,6 +470,7 @@ function navHtml(activePage, basePath = '') {
   const prefix = basePath || '';
   const aboutHref = activePage === 'home' ? '#about' : `${prefix}/index.html#about`;
   const brandsHref = activePage === 'home' ? '#brands' : `${prefix}/index.html#brands`;
+  const shopHref = activePage === 'home' ? '#shop' : `${prefix}/index.html#shop`;
   const storesHref = activePage === 'home' ? '#stores' : `${prefix}/index.html#stores`;
 
   return `<nav>
@@ -462,13 +480,24 @@ function navHtml(activePage, basePath = '') {
   <ul class="nav-links">
     <li><a href="${aboutHref}">About</a></li>
     <li><a href="${brandsHref}">Brands</a></li>
+    <li><a href="${shopHref}">Shop</a></li>
     <li><a href="${storesHref}">Stores</a></li>
     <li><a href="${prefix}/journal/index.html"${activePage === 'journal' ? ' class="active"' : ''}>Journal</a></li>
     <li><a href="${storesHref}">Contact</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-right">
+    <button class="cart-button snipcart-checkout" aria-label="Shopping bag">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-count snipcart-items-count">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 <script>
   const btn = document.getElementById('hamburger');
@@ -487,6 +516,7 @@ function footerHtml(basePath = '') {
   <ul class="footer-links">
     <li><a href="${prefix}/index.html#about">About</a></li>
     <li><a href="${prefix}/index.html#brands">Brands</a></li>
+    <li><a href="${prefix}/index.html#shop">Shop</a></li>
     <li><a href="${prefix}/journal/index.html">Journal</a></li>
     <li><a href="${prefix}/index.html#stores">Stores</a></li>
   </ul>
@@ -799,14 +829,10 @@ function build() {
   }
   ensureDir(DIST);
 
-  // Copy assets directory if it exists
+  // Copy assets directory recursively if it exists
   const assetsDir = path.join(__dirname, 'assets');
   if (fs.existsSync(assetsDir)) {
-    const destAssets = path.join(DIST, 'assets');
-    ensureDir(destAssets);
-    for (const f of fs.readdirSync(assetsDir)) {
-      fs.copyFileSync(path.join(assetsDir, f), path.join(destAssets, f));
-    }
+    copyDirRecursive(assetsDir, path.join(DIST, 'assets'));
   }
 
   const posts = loadPosts();

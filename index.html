@@ -35,6 +35,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://app.snipcart.com">
+<link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.css" />
+<script async src="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.js"></script>
 <style>
   :root {
     --cyan: #38BCD4;
@@ -500,6 +503,212 @@
       letter-spacing: 0.25em;
     }
   }
+
+  /* ─── NAV RIGHT (cart + hamburger) ─── */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cart-button {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--dark);
+    transition: color 0.2s;
+    padding: 0.3rem;
+  }
+  .cart-button:hover { color: var(--cyan); }
+  .cart-count {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: var(--cyan);
+    color: white;
+    font-size: 0.55rem;
+    font-family: "Outfit", sans-serif;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+
+  /* ─── SHIPPING BANNER ─── */
+  .shop-shipping {
+    text-align: center;
+    padding: 1.2rem;
+    background: var(--light);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  .shop-shipping span { color: var(--cyan); font-weight: 400; }
+
+  /* ─── SHOP SECTION ─── */
+  .shop { padding: 5rem 6rem; }
+  .shop-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 0.8rem;
+  }
+  .shop-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+    color: var(--dark);
+  }
+  .shop-title em { font-style: italic; font-weight: 300; }
+  .shop-subtitle {
+    font-size: 0.85rem;
+    color: var(--mid);
+    margin-bottom: 3rem;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  /* Filters */
+  .shop-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .filter-btn {
+    padding: 0.5rem 1.2rem;
+    font-family: "Outfit", sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 1px;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    border-color: var(--dark);
+    color: var(--dark);
+  }
+
+  /* Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .product-card {
+    position: relative;
+    cursor: pointer;
+  }
+  .product-card[data-hidden="true"] { display: none; }
+  .product-image {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--light);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.5s ease;
+  }
+  .product-image .product-img-detail {
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+  }
+  .product-image:hover .product-img-detail { opacity: 1; }
+  .product-image:hover .product-img-main { opacity: 0; }
+  .product-image:hover .product-quick-add {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .product-quick-add {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+  .product-quick-add button {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--dark);
+    color: white;
+    border: none;
+    font-family: "Outfit", sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .product-quick-add button:hover { background: var(--cyan); }
+  .product-name {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 0.25rem;
+  }
+  .product-detail {
+    font-size: 0.72rem;
+    color: var(--mid);
+    margin-bottom: 0.3rem;
+  }
+  .product-price {
+    font-size: 0.8rem;
+    color: var(--dark);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* Color swatches */
+  .product-colors {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  .color-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .color-swatch:hover,
+  .color-swatch.active { border-color: var(--dark); }
+
+  /* Shop responsive */
+  @media (max-width: 900px) {
+    .shop { padding: 3rem 1.5rem; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .shop-title { font-size: 1.8rem; }
+  }
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr; max-width: 380px; }
+    .shop-filters { flex-wrap: wrap; }
+  }
 </style>
 </head>
 <body>
@@ -510,12 +719,23 @@
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#brands">Brands</a></li>
+    <li><a href="#shop">Shop</a></li>
     <li><a href="#stores">Stores</a></li>
     <li><a href="#stores">Contact</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-right">
+    <button class="cart-button snipcart-checkout" aria-label="Shopping bag">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-count snipcart-items-count">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <script>
@@ -604,6 +824,328 @@
   </ul>
 </section>
 
+<!-- SHIPPING BANNER -->
+<div class="shop-shipping">
+  <span>Free shipping</span> on all EU orders over &euro;150
+</div>
+
+<!-- SHOP -->
+<section class="shop" id="shop">
+  <p class="shop-eyebrow">The Collection</p>
+  <h2 class="shop-title">Cashmere <em>scarves &amp; capes</em></h2>
+  <p class="shop-subtitle">Hand-finished cashmere pieces from small ateliers. Each piece is unique in weight and drape &mdash; woven from the softest superfine pure cashmere.</p>
+
+  <div class="shop-filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="scarf">Scarves</button>
+    <button class="filter-btn" data-filter="cape">Capes</button>
+  </div>
+
+  <div class="product-grid">
+
+    <!-- 1. Blackcurrent · Video · Drone -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/blackcurrent-video-drone.jpg" alt="St. Tropez Degradee Shawl — Blackcurrent / Video / Drone" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/blackcurrent-video-drone-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-blackcurrent-video-drone"
+            data-item-name="St. Tropez Degradee Shawl — Blackcurrent / Video / Drone"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/blackcurrent-video-drone.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #2d1b2e, #6b2fa0, #3a5f8a);" title="Blackcurrent / Video / Drone"></div>
+      </div>
+    </div>
+
+    <!-- 2. Bulb · Hibiscus · Frangipani -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/bulb-hibiscus-frangipani.jpg" alt="St. Tropez Degradee Shawl — Bulb / Hibiscus / Frangipani" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/bulb-hibiscus-frangipani-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-bulb-hibiscus-frangipani"
+            data-item-name="St. Tropez Degradee Shawl — Bulb / Hibiscus / Frangipani"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/bulb-hibiscus-frangipani.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #e8d44d, #d4456a, #f5c6a0);" title="Bulb / Hibiscus / Frangipani"></div>
+      </div>
+    </div>
+
+    <!-- 3. Electric · Video · Drone -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/electric-video-drone.jpg" alt="St. Tropez Degradee Shawl — Electric / Video / Drone" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/electric-video-drone-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-electric-video-drone"
+            data-item-name="St. Tropez Degradee Shawl — Electric / Video / Drone"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/electric-video-drone.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #2563eb, #6b2fa0, #3a5f8a);" title="Electric / Video / Drone"></div>
+      </div>
+    </div>
+
+    <!-- 4. Bodywork · Macassar · Chrysalis -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/bodywork-macassar-chrysalis.jpg" alt="St. Tropez Degradee Shawl — Bodywork / Macassar / Chrysalis" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/bodywork-macassar-chrysalis-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-bodywork-macassar-chrysalis"
+            data-item-name="St. Tropez Degradee Shawl — Bodywork / Macassar / Chrysalis"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/bodywork-macassar-chrysalis.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #8b6f47, #3d2b1f, #7a8b6f);" title="Bodywork / Macassar / Chrysalis"></div>
+      </div>
+    </div>
+
+    <!-- 5. Dark · Drone · Cover -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/dark-drone-cover.jpg" alt="St. Tropez Degradee Shawl — Dark / Drone / Cover" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/dark-drone-cover-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-dark-drone-cover"
+            data-item-name="St. Tropez Degradee Shawl — Dark / Drone / Cover"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/dark-drone-cover.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #1a1a1a, #3a5f8a, #5a5a5a);" title="Dark / Drone / Cover"></div>
+      </div>
+    </div>
+
+    <!-- 6. Drone · Morning Glory · Chalcedony -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/drone-morningglory-chalcedony.jpg" alt="St. Tropez Degradee Shawl — Drone / Morning Glory / Chalcedony" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/drone-morningglory-chalcedony-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-drone-morningglory-chalcedony"
+            data-item-name="St. Tropez Degradee Shawl — Drone / Morning Glory / Chalcedony"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/drone-morningglory-chalcedony.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #3a5f8a, #7b68ee, #b0c4de);" title="Drone / Morning Glory / Chalcedony"></div>
+      </div>
+    </div>
+
+    <!-- 7. Drone · Video · Bodywork · Morning Glory -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/drone-video-bodywork-morningglory.jpg" alt="St. Tropez Degradee Shawl — Drone / Video / Bodywork / Morning Glory" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/drone-video-bodywork-morningglory-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-drone-video-bodywork-morningglory"
+            data-item-name="St. Tropez Degradee Shawl — Drone / Video / Bodywork / Morning Glory"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/drone-video-bodywork-morningglory.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #3a5f8a, #6b2fa0, #8b6f47, #7b68ee);" title="Drone / Video / Bodywork / Morning Glory"></div>
+      </div>
+    </div>
+
+    <!-- 8. Macassar · Cover · Bowl -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/macassar-cover-bowl.jpg" alt="St. Tropez Degradee Shawl — Macassar / Cover / Bowl" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/macassar-cover-bowl-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-macassar-cover-bowl"
+            data-item-name="St. Tropez Degradee Shawl — Macassar / Cover / Bowl"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/macassar-cover-bowl.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #3d2b1f, #5a5a5a, #6b4423);" title="Macassar / Cover / Bowl"></div>
+      </div>
+    </div>
+
+    <!-- 9. Drone · Blackcurrent · Hibiscus -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/drone-blackcurrent-hibiscus.jpg" alt="St. Tropez Degradee Shawl — Drone / Blackcurrent / Hibiscus" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/drone-blackcurrent-hibiscus-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-drone-blackcurrent-hibiscus"
+            data-item-name="St. Tropez Degradee Shawl — Drone / Blackcurrent / Hibiscus"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/drone-blackcurrent-hibiscus.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #3a5f8a, #2d1b2e, #d4456a);" title="Drone / Blackcurrent / Hibiscus"></div>
+      </div>
+    </div>
+
+    <!-- 10. Dark · Macassar · Sap -->
+    <div class="product-card" data-category="scarf">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/dark-macassar-sap.jpg" alt="St. Tropez Degradee Shawl — Dark / Macassar / Sap" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/dark-macassar-sap-detail.jpg" alt="St. Tropez Degradee Shawl detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="a975-dark-macassar-sap"
+            data-item-name="St. Tropez Degradee Shawl — Dark / Macassar / Sap"
+            data-item-price="379.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · 140×180 cm · 4 side fringes"
+            data-item-image="/assets/shop/dark-macassar-sap.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">St. Tropez Degradee Shawl</p>
+      <p class="product-detail">100% Superfine Cashmere · 140 × 180 cm</p>
+      <p class="product-price">&euro;379</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #1a1a1a, #3d2b1f, #4a6741);" title="Dark / Macassar / Sap"></div>
+      </div>
+    </div>
+
+    <!-- 11. Cape — Earthy -->
+    <div class="product-card" data-category="cape">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/cape-earthy.jpg" alt="Woven Semi Felted Degradee Cape — Earthy" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/cape-earthy-detail.jpg" alt="Woven Semi Felted Degradee Cape detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="g912-cape-earthy"
+            data-item-name="Woven Semi Felted Degradee Cape — Earthy"
+            data-item-price="615.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · One size · Open front, pockets, fringes"
+            data-item-image="/assets/shop/cape-earthy.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">Woven Semi Felted Degrad&eacute;e Cape</p>
+      <p class="product-detail">100% Superfine Cashmere · One size</p>
+      <p class="product-price">&euro;615</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #8b7355, #a0522d, #d2b48c);" title="Earthy"></div>
+      </div>
+    </div>
+
+    <!-- 12. Cape — Greys -->
+    <div class="product-card" data-category="cape">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/cape-greys.jpg" alt="Woven Semi Felted Degradee Cape — Greys" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/cape-greys-detail.jpg" alt="Woven Semi Felted Degradee Cape detail" loading="lazy">
+        <div class="product-quick-add">
+          <button class="snipcart-add-item"
+            data-item-id="g912-cape-greys"
+            data-item-name="Woven Semi Felted Degradee Cape — Greys"
+            data-item-price="615.00"
+            data-item-url="/"
+            data-item-description="100% Superfine Cashmere · One size · Open front, pockets, fringes"
+            data-item-image="/assets/shop/cape-greys.jpg">
+            Add to Bag
+          </button>
+        </div>
+      </div>
+      <p class="product-name">Woven Semi Felted Degrad&eacute;e Cape</p>
+      <p class="product-detail">100% Superfine Cashmere · One size</p>
+      <p class="product-price">&euro;615</p>
+      <div class="product-colors">
+        <div class="color-swatch active" style="background: linear-gradient(135deg, #808080, #a9a9a9, #d3d3d3);" title="Greys"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- STORES -->
 <section class="stores" id="stores">
 
@@ -688,6 +1230,7 @@
   <ul class="footer-links">
     <li><a href="#about">About</a></li>
     <li><a href="#brands">Brands</a></li>
+    <li><a href="#shop">Shop</a></li>
     <li><a href="#stores">Ibiza</a></li>
     <li><a href="#stores">Formentera</a></li>
   </ul>
@@ -699,5 +1242,30 @@
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<!-- Shop filter logic -->
+<script>
+(function() {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.product-card');
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.getAttribute('data-filter');
+      cards.forEach(function(card) {
+        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+          card.setAttribute('data-hidden', 'false');
+          card.style.display = '';
+        } else {
+          card.setAttribute('data-hidden', 'true');
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+<div hidden id="snipcart" data-api-key="MzlhMDY1OTQtMWM5MS00OWQ2LWFmMWEtYmFmNDJlZThhMzRmNjM5MTA5MTc5Mzc0ODg4MjY0"></div>
 </body>
 </html>
