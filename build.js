@@ -818,6 +818,24 @@ Sitemap: ${SITE_URL}/sitemap.xml
   fs.writeFileSync(path.join(DIST, 'robots.txt'), txt);
 }
 
+// ─── Generate _redirects + _headers (Cloudflare Pages / Netlify compatible) ──
+
+function buildRedirects() {
+  // Cloudflare Pages auto-serves /foo/ -> /foo/index.html, but mirroring the
+  // Netlify rule keeps the behavior identical across platforms.
+  const txt = `/journal/page/*  /journal/page/:splat/index.html  200
+`;
+  fs.writeFileSync(path.join(DIST, '_redirects'), txt);
+}
+
+function buildHeaders() {
+  const txt = `/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+`;
+  fs.writeFileSync(path.join(DIST, '_headers'), txt);
+}
+
 // ─── Main build ──────────────────────────────────────────────────────────────
 
 function build() {
@@ -854,6 +872,10 @@ function build() {
   // SEO files
   buildSitemap(posts);
   buildRobots();
+
+  // Cloudflare Pages / Netlify platform files
+  buildRedirects();
+  buildHeaders();
 
   console.log(`Built: ${posts.length} post pages, ${Math.ceil(posts.length / POSTS_PER_PAGE)} journal pages, sitemap, robots.txt`);
   console.log('Done!');
