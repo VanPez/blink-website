@@ -1,0 +1,15 @@
+# Cloudflare Pages project config (used for local dev with `wrangler pages dev`)
+# Production KV bindings are configured in the CF dashboard:
+#   Pages → blink-website → Settings → Functions → KV namespace bindings
+
+name = "blink-website"
+compatibility_date = "2024-09-01"
+
+# Local dev only — create a preview KV namespace for testing:
+#   npx wrangler kv:namespace create INVENTORY --preview
+# Then uncomment the block below:
+#
+# [[kv_namespaces]]
+# binding = "INVENTORY"
+# id = "<your-kv-namespace-id>"
+# preview_id = "<your-preview-kv-namespace-id>"

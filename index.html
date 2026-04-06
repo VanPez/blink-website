@@ -1287,6 +1287,41 @@
     }
   };
 
+  // ─── LIVE STOCK: fetch from /api/stock and update soldOut flags ───
+  (function loadStock() {
+    fetch('/api/stock')
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(stock) {
+        if (!stock) return;
+        Object.keys(products).forEach(function(pid) {
+          products[pid].colors.forEach(function(c) {
+            var key = pid + ':' + c.slug;
+            if (key in stock) {
+              c.soldOut = stock[key] <= 0;
+            }
+          });
+        });
+        // If modal is open, refresh the button state
+        if (currentProduct && currentColor) updateSnipcartButton();
+        // Also update the card-level sold-out badges
+        updateCardBadges();
+      })
+      .catch(function() { /* KV not set up yet — keep defaults */ });
+  })();
+
+  function updateCardBadges() {
+    document.querySelectorAll('.product-card').forEach(function(card) {
+      var pid = card.getAttribute('data-product');
+      if (!pid || !products[pid]) return;
+      var allSold = products[pid].colors.every(function(c) { return c.soldOut; });
+      if (allSold) {
+        card.classList.add('all-sold-out');
+      } else {
+        card.classList.remove('all-sold-out');
+      }
+    });
+  }
+
   // ─── FILTERS ───
   const filterBtns = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.product-card');
@@ -1422,7 +1457,8 @@
     modalAddBtn.setAttribute('data-item-custom1-name', 'Colour');
     modalAddBtn.setAttribute('data-item-custom1-options', p.colors.map(function(x) { return x.name; }).join('|'));
     modalAddBtn.setAttribute('data-item-custom1-value', c.name);
-    // Sold out state
+    // Stock-aware sold out state
+    modalAddBtn.setAttribute('data-item-max-quantity', c.soldOut ? '0' : '1');
     if (c.soldOut) {
       modalAddBtn.classList.add('sold-out');
       modalAddBtn.setAttribute('disabled', 'disabled');
