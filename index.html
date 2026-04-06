@@ -1321,10 +1321,7 @@
       name: 'Extrait de Parfum',
       price: 130,
       description: 'Nasomatto extrait de parfum by Alessandro Gualtieri. 30&nbsp;ml.',
-      heroImages: [
-        '/assets/shop/black-afgano-hero-1.jpg',
-        '/assets/shop/baraonda-hero-1.jpg'
-      ],
+      heroImages: [],
       colors: [
         { name: 'Black Afgano', slug: 'black-afgano', gradient: 'linear-gradient(135deg, #1a1a1a, #2d2d2d, #3a3a3a)', soldOut: false, desc: 'The fragrance aims to evoke the best quality of hashish. It is the result of a quest to arouse the effects of temporary bliss. &mdash; The Nose' },
         { name: 'Duro', slug: 'duro', gradient: 'linear-gradient(135deg, #3d2b1f, #5a4030, #7a6050)', soldOut: false, desc: 'The fragrance aims to enhance all the manifestations of male strength. &mdash; The Nose' },
@@ -1467,8 +1464,13 @@
       modalThumbs.appendChild(thumb);
     });
 
-    // Set initial main image (hero shot — no detail hover)
-    setMainImage(p.heroImages[0], null);
+    // Set initial main image (hero shot, or first variant if no heroes)
+    if (p.heroImages.length > 0) {
+      setMainImage(p.heroImages[0], null);
+    } else {
+      var fc = currentColor;
+      setMainImage('/assets/shop/' + fc.slug + '.jpg', '/assets/shop/' + fc.slug + '-detail.jpg');
+    }
     modalMainImg.alt = (p.brand || 'Mirror In The Sky') + ' — ' + p.name;
 
     // Build color swatches
