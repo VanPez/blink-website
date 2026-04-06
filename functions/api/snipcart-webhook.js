@@ -48,12 +48,14 @@ export async function onRequestPost(context) {
 
   for (const item of items) {
     const productId = item.id;                    // "a975" or "g912"
+    // Prefer the explicit slug field; fall back to slugifying the name
+    const slugField = (item.customFields || [])
+      .find((f) => f.name === 'ColourSlug');
     const colourField = (item.customFields || [])
       .find((f) => f.name === 'Colour');
-    if (!colourField) continue;
+    if (!slugField && !colourField) continue;
 
-    // Convert colour name to slug (same logic as the HTML data)
-    const colourSlug = slugify(colourField.value);
+    const colourSlug = slugField ? slugField.value : slugify(colourField.value);
     const key = `stock:${productId}:${colourSlug}`;
 
     // Decrement (floor at 0)

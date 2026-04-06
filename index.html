@@ -1457,6 +1457,9 @@
     modalAddBtn.setAttribute('data-item-custom1-name', 'Colour');
     modalAddBtn.setAttribute('data-item-custom1-options', p.colors.map(function(x) { return x.name; }).join('|'));
     modalAddBtn.setAttribute('data-item-custom1-value', c.name);
+    modalAddBtn.setAttribute('data-item-custom2-name', 'ColourSlug');
+    modalAddBtn.setAttribute('data-item-custom2-type', 'hidden');
+    modalAddBtn.setAttribute('data-item-custom2-value', c.slug);
     // Stock-aware sold out state
     modalAddBtn.setAttribute('data-item-max-quantity', c.soldOut ? '0' : '1');
     if (c.soldOut) {

@@ -34,8 +34,8 @@ const ALL_VARIANTS = [
   'a975:macassar-cover-bowl',
   'a975:drone-blackcurrent-hibiscus',
   'a975:dark-macassar-sap',
-  'g912:earthy',
-  'g912:greys',
+  'g912:cape-earthy',
+  'g912:cape-greys',
 ];
 
 export async function onRequestPost(context) {
