@@ -659,6 +659,15 @@
     opacity: 1;
     transform: translateY(0);
   }
+  /* Perfume cards: contain full image, no crop */
+  [data-category="perfume"] .product-image { background: var(--light); }
+  [data-category="perfume"] .product-image img { object-fit: contain; }
+
+  /* Modal: contain mode for perfume bottles */
+  .product-modal-box.perfume-modal .modal-main-image img { object-fit: contain; }
+  .product-modal-box.perfume-modal .modal-gallery { background: #f5f5f3; }
+  .product-modal-box.perfume-modal .modal-thumb img { object-fit: contain; }
+
   .product-quick-add {
     position: absolute;
     bottom: 0;
@@ -1122,8 +1131,8 @@
     <!-- Nasomatto · Extrait de Parfum Collection -->
     <div class="product-card" data-category="perfume" data-product="nasomatto">
       <div class="product-image">
-        <img class="product-img-main" src="/assets/shop/black-afgano-hero-1.jpg" alt="Nasomatto — Extrait de Parfum" loading="lazy">
-        <img class="product-img-detail" src="/assets/shop/black-afgano-hero-2.jpg" alt="Nasomatto — Extrait de Parfum detail" loading="lazy">
+        <img class="product-img-main" src="/assets/shop/nasomatto-cover.jpg" alt="Nasomatto — Extrait de Parfum" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/nasomatto-cover.jpg" alt="Nasomatto — Extrait de Parfum detail" loading="lazy">
         <div class="product-quick-add">
           <button type="button" data-open-product="nasomatto">View Details</button>
         </div>
@@ -1413,6 +1422,14 @@
     currentProduct = p;
     // Pick first available color (fallback to first if all sold out)
     currentColor = p.colors.find(function(c) { return !c.soldOut; }) || p.colors[0];
+
+    // Toggle perfume-specific modal styling
+    var modalBox = modal.querySelector('.product-modal-box');
+    if (p.variantLabel === 'Fragrance') {
+      modalBox.classList.add('perfume-modal');
+    } else {
+      modalBox.classList.remove('perfume-modal');
+    }
 
     modalBrand.textContent = p.brand || 'Mirror In The Sky';
     modalStyleCode.textContent = p.code;
