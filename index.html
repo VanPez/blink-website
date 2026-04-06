@@ -1387,6 +1387,15 @@
         setMainImage(img.src, img.detail);
         modalThumbs.querySelectorAll('.modal-thumb').forEach(function(t) { t.classList.remove('active'); });
         thumb.classList.add('active');
+        // If this thumbnail is a colour variant, sync the colour selection
+        if (!img.isHero && img.color && !img.color.soldOut) {
+          currentColor = img.color;
+          modalColorName.textContent = img.color.name;
+          modalColors.querySelectorAll('.modal-color-swatch').forEach(function(s) { s.classList.remove('active'); });
+          var matchSwatch = modalColors.querySelector('[title="' + img.color.name + '"]');
+          if (matchSwatch) matchSwatch.classList.add('active');
+          updateSnipcartButton();
+        }
       });
       modalThumbs.appendChild(thumb);
     });
