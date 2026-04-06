@@ -36,6 +36,17 @@ const ALL_VARIANTS = [
   'a975:dark-macassar-sap',
   'g912:cape-earthy',
   'g912:cape-greys',
+  'nasomatto:black-afgano',
+  'nasomatto:duro',
+  'nasomatto:pardon',
+  'nasomatto:silver-musk',
+  'nasomatto:baraonda',
+  'nasomatto:narcotic-v',
+  'nasomatto:china-white',
+  'nasomatto:nudiflorum',
+  'nasomatto:blamage',
+  'nasomatto:fantomas',
+  'nasomatto:sadonaso',
 ];
 
 export async function onRequestPost(context) {

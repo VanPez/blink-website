@@ -1082,6 +1082,7 @@
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="scarf">Scarves</button>
     <button class="filter-btn" data-filter="cape">Capes</button>
+    <button class="filter-btn" data-filter="perfume">Perfumes</button>
   </div>
 
   <div class="product-grid">
@@ -1118,6 +1119,22 @@
       <p class="product-price">&euro;615</p>
     </div>
 
+    <!-- Nasomatto · Extrait de Parfum Collection -->
+    <div class="product-card" data-category="perfume" data-product="nasomatto">
+      <div class="product-image">
+        <img class="product-img-main" src="/assets/shop/black-afgano-hero-1.jpg" alt="Nasomatto — Extrait de Parfum" loading="lazy">
+        <img class="product-img-detail" src="/assets/shop/black-afgano-hero-2.jpg" alt="Nasomatto — Extrait de Parfum detail" loading="lazy">
+        <div class="product-quick-add">
+          <button type="button" data-open-product="nasomatto">View Details</button>
+        </div>
+      </div>
+      <p class="product-brand">Nasomatto</p>
+      <p class="product-style">Extrait de Parfum</p>
+      <p class="product-name">Perfume Collection</p>
+      <p class="product-detail">30 ml · 11 fragrances</p>
+      <p class="product-price">&euro;130</p>
+    </div>
+
   </div>
 </section>
 
@@ -1133,12 +1150,12 @@
       <div class="modal-thumbs" id="modal-thumbs"></div>
     </div>
     <div class="modal-info">
-      <p class="modal-brand">Mirror In The Sky</p>
+      <p class="modal-brand" id="modal-brand">Mirror In The Sky</p>
       <p class="modal-style-code" id="modal-style-code"></p>
       <h3 class="modal-title" id="modal-title"></h3>
       <p class="modal-price" id="modal-price"></p>
       <p class="modal-description" id="modal-description"></p>
-      <p class="modal-color-label">Colour <span id="modal-color-name"></span></p>
+      <p class="modal-color-label"><span id="modal-color-label-text">Colour</span> <span id="modal-color-name"></span></p>
       <div class="modal-colors" id="modal-colors"></div>
       <button class="modal-add-btn snipcart-add-item" id="modal-add-btn">Add to Bag</button>
     </div>
@@ -1249,6 +1266,7 @@
     a975: {
       id: 'a975',
       code: 'A975',
+      brand: 'Mirror In The Sky',
       name: 'St. Tropez Degradee Shawl',
       price: 379,
       description: 'Hand-finished degradé shawl in 100% superfine cashmere. Airy, light and boldly coloured &mdash; each piece is unique in weight and drape. 140 &times; 180 cm.',
@@ -1272,6 +1290,7 @@
     g912: {
       id: 'g912',
       code: 'G912',
+      brand: 'Mirror In The Sky',
       name: 'Woven Semi Felted Degradée Cape',
       price: 615,
       description: 'Woven semi-felted cashmere cape with flowing degradé dip-dye. One size, unisex drape. A sculptural piece that layers beautifully over both tailoring and relaxed silhouettes.',
@@ -1283,6 +1302,32 @@
       colors: [
         { name: 'Earthy', slug: 'cape-earthy', gradient: 'linear-gradient(135deg, #8b7355, #a0522d, #d2b48c)' , soldOut: false },
         { name: 'Greys', slug: 'cape-greys', gradient: 'linear-gradient(135deg, #808080, #a9a9a9, #d3d3d3)' , soldOut: false }
+      ]
+    },
+    nasomatto: {
+      id: 'nasomatto',
+      code: 'NASOMATTO',
+      brand: 'Nasomatto',
+      variantLabel: 'Fragrance',
+      name: 'Extrait de Parfum',
+      price: 130,
+      description: 'Nasomatto extrait de parfum by Alessandro Gualtieri. 30&nbsp;ml.',
+      heroImages: [
+        '/assets/shop/black-afgano-hero-1.jpg',
+        '/assets/shop/baraonda-hero-1.jpg'
+      ],
+      colors: [
+        { name: 'Black Afgano', slug: 'black-afgano', gradient: 'linear-gradient(135deg, #1a1a1a, #2d2d2d, #3a3a3a)', soldOut: false, desc: 'The fragrance aims to evoke the best quality of hashish. It is the result of a quest to arouse the effects of temporary bliss. &mdash; The Nose' },
+        { name: 'Duro', slug: 'duro', gradient: 'linear-gradient(135deg, #3d2b1f, #5a4030, #7a6050)', soldOut: false, desc: 'The fragrance aims to enhance all the manifestations of male strength. &mdash; The Nose' },
+        { name: 'Pardon', slug: 'pardon', gradient: 'linear-gradient(135deg, #4a3728, #6b4f3a, #8a6d50)', soldOut: false, desc: 'The fragrance aims to evoke the persuasion of utmost masculine elegance and charm. &mdash; The Nose' },
+        { name: 'Silver Musk', slug: 'silver-musk', gradient: 'linear-gradient(135deg, #a8a8a8, #c0c0c0, #d8d8d8)', soldOut: false, desc: 'The fragrance aims to evoke superhero magnetism. It is the result of a quest for mercurial liquid love sensation. &mdash; The Nose' },
+        { name: 'Baraonda', slug: 'baraonda', gradient: 'linear-gradient(135deg, #b8860b, #d4a020, #e8c040)', soldOut: false, desc: 'The fragrance encourages a raw taste sensation. It is the result of a quest to evoke the powerful and mighty whisper of an olfactory stirring, which magically rejoins the whole and the nothing. &mdash; The Nose' },
+        { name: 'Narcotic V.', slug: 'narcotic-v', gradient: 'linear-gradient(135deg, #8b0000, #b22222, #cc3333)', soldOut: false, desc: 'The fragrance is the result of a quest for the overwhelming addictive intensity of female sexual power. &mdash; The Nose' },
+        { name: 'China White', slug: 'china-white', gradient: 'linear-gradient(135deg, #f0ebe0, #f5f0e8, #faf8f4)', soldOut: false, desc: 'The fragrance aims to uncover the treasure of a sentimental journey. It is the result of a quest to reveal the strength of fragility. &mdash; The Nose' },
+        { name: 'Nudiflorum', slug: 'nudiflorum', gradient: 'linear-gradient(135deg, #d4a0a0, #e0b8b0, #e8ccc4)', soldOut: false, desc: 'It is the result of a quest to find a vanishing point in nature, a nude desire in the translucence of our senses. &mdash; The Nose' },
+        { name: 'Blamage', slug: 'blamage', gradient: 'linear-gradient(135deg, #2e5a2e, #3a7a3a, #4a9a4a)', soldOut: false, desc: 'The fragrance is an unwise and unfortunate creation caused by bad judgement and care. &mdash; The Nose' },
+        { name: 'Fantomas', slug: 'fantomas', gradient: 'linear-gradient(135deg, #5a5a5a, #7a7a7a, #9a9a9a)', soldOut: false, desc: 'The fragrance is an elusive hint towards the transgressive act that has been carried out with an ease of a refined precision. &mdash; The Nose' },
+        { name: 'Sadonaso', slug: 'sadonaso', gradient: 'linear-gradient(135deg, #1a3a5c, #2a5580, #3a70a0)', soldOut: false, desc: 'There is no purpose in life beyond the pleasure of the senses. I have a secret desire that even i don\u2019t know about, as i am constantly discovering a new one. I think that secret represents the true future. &mdash; The Nose' }
       ]
     }
   };
@@ -1355,6 +1400,8 @@
   const modalDescription = document.getElementById('modal-description');
   const modalColors = document.getElementById('modal-colors');
   const modalColorName = document.getElementById('modal-color-name');
+  const modalColorLabelText = document.getElementById('modal-color-label-text');
+  const modalBrand = document.getElementById('modal-brand');
   const modalAddBtn = document.getElementById('modal-add-btn');
 
   let currentProduct = null;
@@ -1367,10 +1414,12 @@
     // Pick first available color (fallback to first if all sold out)
     currentColor = p.colors.find(function(c) { return !c.soldOut; }) || p.colors[0];
 
+    modalBrand.textContent = p.brand || 'Mirror In The Sky';
     modalStyleCode.textContent = p.code;
     modalTitle.textContent = p.name;
     modalPrice.innerHTML = '&euro;' + p.price;
     modalDescription.innerHTML = p.description;
+    modalColorLabelText.textContent = p.variantLabel || 'Colour';
 
     // Build gallery thumbnails: hero shots + color variants
     const allImages = [].concat(
@@ -1391,6 +1440,7 @@
         if (!img.isHero && img.color && !img.color.soldOut) {
           currentColor = img.color;
           modalColorName.textContent = img.color.name;
+          if (img.color.desc) modalDescription.innerHTML = img.color.desc;
           modalColors.querySelectorAll('.modal-color-swatch').forEach(function(s) { s.classList.remove('active'); });
           var matchSwatch = modalColors.querySelector('[title="' + img.color.name + '"]');
           if (matchSwatch) matchSwatch.classList.add('active');
@@ -1402,7 +1452,7 @@
 
     // Set initial main image (hero shot — no detail hover)
     setMainImage(p.heroImages[0], null);
-    modalMainImg.alt = 'Mirror In The Sky — ' + p.name;
+    modalMainImg.alt = (p.brand || 'Mirror In The Sky') + ' — ' + p.name;
 
     // Build color swatches
     modalColors.innerHTML = '';
@@ -1421,6 +1471,8 @@
         modalColors.querySelectorAll('.modal-color-swatch').forEach(function(s) { s.classList.remove('active'); });
         sw.classList.add('active');
         modalColorName.textContent = c.name;
+        // Update description if variant has its own
+        if (c.desc) modalDescription.innerHTML = c.desc;
         updateSnipcartButton();
         // Swap main image to this color variant (with detail for hover)
         const variantSrc = '/assets/shop/' + c.slug + '.jpg';
@@ -1435,6 +1487,8 @@
       modalColors.appendChild(sw);
     });
     modalColorName.textContent = currentColor.name;
+    // Show per-variant description if available
+    if (currentColor.desc) modalDescription.innerHTML = currentColor.desc;
 
     updateSnipcartButton();
 
@@ -1457,16 +1511,18 @@
   function updateSnipcartButton() {
     const p = currentProduct;
     const c = currentColor;
+    var variantLabel = p.variantLabel || 'Colour';
+    var itemDesc = c.desc ? c.desc.replace(/<[^>]*>/g, '').replace(/&mdash;/g, '—') : p.description.replace(/<[^>]*>/g, '');
     modalAddBtn.setAttribute('data-item-id', p.id);
-    modalAddBtn.setAttribute('data-item-name', 'Mirror In The Sky — ' + p.name);
+    modalAddBtn.setAttribute('data-item-name', (p.brand || 'Mirror In The Sky') + ' — ' + (p.variantLabel ? c.name : p.name));
     modalAddBtn.setAttribute('data-item-price', p.price);
     modalAddBtn.setAttribute('data-item-url', '/');
-    modalAddBtn.setAttribute('data-item-description', p.description.replace(/<[^>]*>/g, ''));
+    modalAddBtn.setAttribute('data-item-description', itemDesc);
     modalAddBtn.setAttribute('data-item-image', '/assets/shop/' + c.slug + '.jpg');
-    modalAddBtn.setAttribute('data-item-custom1-name', 'Colour');
+    modalAddBtn.setAttribute('data-item-custom1-name', variantLabel);
     modalAddBtn.setAttribute('data-item-custom1-options', p.colors.map(function(x) { return x.name; }).join('|'));
     modalAddBtn.setAttribute('data-item-custom1-value', c.name);
-    modalAddBtn.setAttribute('data-item-custom2-name', 'ColourSlug');
+    modalAddBtn.setAttribute('data-item-custom2-name', variantLabel + 'Slug');
     modalAddBtn.setAttribute('data-item-custom2-type', 'hidden');
     modalAddBtn.setAttribute('data-item-custom2-value', c.slug);
     // Stock-aware sold out state
