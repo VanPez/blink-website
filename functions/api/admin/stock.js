@@ -75,14 +75,15 @@ export async function onRequestPost(context) {
 
   const action = body.action;
 
-  // ── INIT: set every variant to qty 1 ──────────────────────────────
+  // ── INIT: set every variant to given qty (default 1) ───────────────
   if (action === 'init') {
+    const initQty = String(body.qty !== undefined ? body.qty : 1);
     await Promise.all(
-      ALL_VARIANTS.map((v) => kv.put(`stock:${v}`, '1'))
+      ALL_VARIANTS.map((v) => kv.put(`stock:${v}`, initQty))
     );
     return Response.json({
       ok: true,
-      message: `Initialized ${ALL_VARIANTS.length} variants to qty 1`,
+      message: `Initialized ${ALL_VARIANTS.length} variants to qty ${initQty}`,
     });
   }
 
