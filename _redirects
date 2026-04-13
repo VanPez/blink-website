@@ -1,0 +1,3 @@
+# Redirect Cloudflare Pages default domain to custom domain
+https://blink-website.pages.dev/* https://blinkformentera.com/:splat 301
+https://*.blink-website.pages.dev/* https://blinkformentera.com/:splat 301
