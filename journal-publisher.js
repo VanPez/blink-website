@@ -16,6 +16,30 @@ const https = require('https');
 const GITHUB_API = 'api.github.com';
 const BRANCH = process.env.GITHUB_BRANCH || 'main';
 
+// ─── Image download helper ───────────────────────────────────────────────────
+// Instagram CDN URLs are signed with a short expiry (~5 days), so we mirror the
+// bytes into the repo at publish time and reference local paths from the JSON.
+
+function downloadImageBuffer(url, redirects = 0) {
+  return new Promise((resolve, reject) => {
+    if (redirects > 5) return reject(new Error('Too many redirects'));
+    https.get(url, { headers: { 'User-Agent': 'Blink-Journal' } }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return downloadImageBuffer(res.headers.location, redirects + 1).then(resolve, reject);
+      }
+      if (res.statusCode !== 200) {
+        // Drain the response so the socket can close
+        res.resume();
+        return reject(new Error(`HTTP ${res.statusCode} fetching image`));
+      }
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => resolve(Buffer.concat(chunks)));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
 // ─── GitHub API helper ───────────────────────────────────────────────────────
 
 function githubRequest(method, apiPath, body) {
@@ -160,6 +184,46 @@ async function publishToJournal(opts) {
       instagramUrl = media.permalink || null;
     }
 
+    // Mirror images into the repo so we don't depend on Instagram's signed URLs
+    // (which expire after ~5 days). Each image is committed separately to the
+    // repo at journal-images/<slug>/<i>.jpg, then we reference local paths.
+    const localImages = [];
+    for (let i = 0; i < images.length; i++) {
+      const remoteUrl = images[i];
+      const repoPath = `journal-images/${slug}/${i}.jpg`;
+      try {
+        const buf = await downloadImageBuffer(remoteUrl);
+        await githubRequest('PUT', `/repos/${owner}/${repo}/contents/${repoPath}`, {
+          message: `Add journal image: ${slug}/${i}.jpg`,
+          content: buf.toString('base64'),
+          branch: BRANCH
+        });
+        console.log(`[Journal] ✅ Stored ${repoPath} (${buf.length} bytes)`);
+        localImages.push(`/${repoPath}`);
+      } catch (err) {
+        console.error(`[Journal] ⚠️  Failed to mirror image ${i} (${err.message}); keeping remote URL as fallback`);
+        localImages.push(remoteUrl);
+      }
+    }
+
+    let localThumbnailUrl = null;
+    if (thumbnailUrl) {
+      const repoPath = `journal-images/${slug}/thumb.jpg`;
+      try {
+        const buf = await downloadImageBuffer(thumbnailUrl);
+        await githubRequest('PUT', `/repos/${owner}/${repo}/contents/${repoPath}`, {
+          message: `Add journal thumbnail: ${slug}/thumb.jpg`,
+          content: buf.toString('base64'),
+          branch: BRANCH
+        });
+        console.log(`[Journal] ✅ Stored ${repoPath} (${buf.length} bytes)`);
+        localThumbnailUrl = `/${repoPath}`;
+      } catch (err) {
+        console.error(`[Journal] ⚠️  Failed to mirror thumbnail (${err.message}); keeping remote URL as fallback`);
+        localThumbnailUrl = thumbnailUrl;
+      }
+    }
+
     // Create the post JSON file
     const postData = {
       id: opts.instagramId || `local-${Date.now()}`,
@@ -167,8 +231,8 @@ async function publishToJournal(opts) {
       publishedAt: now.toISOString(),
       postType: opts.postType || 'single',
       caption: opts.caption,
-      images: images,
-      thumbnailUrl: thumbnailUrl,
+      images: localImages,
+      thumbnailUrl: localThumbnailUrl,
       instagramId: opts.instagramId || null,
       instagramUrl: instagramUrl,
       location: opts.location || null,
@@ -179,7 +243,7 @@ async function publishToJournal(opts) {
     const filePath = `data/posts/${slug}.json`;
     const content = Buffer.from(JSON.stringify(postData, null, 2)).toString('base64');
 
-    // Commit the file to GitHub
+    // Commit the JSON last so the post only "appears" once its images are in place
     console.log(`[Journal] Committing ${filePath} to ${owner}/${repo}...`);
 
     await githubRequest('PUT', `/repos/${owner}/${repo}/contents/${filePath}`, {

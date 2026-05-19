@@ -58,6 +58,14 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+/** OG/canonical metadata needs absolute URLs. Local image paths start with "/". */
+function toAbsoluteUrl(urlOrPath) {
+  if (!urlOrPath) return '';
+  if (/^https?:\/\//i.test(urlOrPath)) return urlOrPath;
+  if (urlOrPath.startsWith('/')) return SITE_URL + urlOrPath;
+  return urlOrPath;
+}
+
 /** Strip hashtags and trim for clean display */
 function cleanCaption(caption) {
   return caption
@@ -599,7 +607,7 @@ function buildPostPage(post, prevPost, nextPost) {
 <meta name="description" content="${escapeHtml(seoDesc)}">
 <meta property="og:title" content="${escapeHtml(seoTitle)}">
 <meta property="og:description" content="${escapeHtml(seoDesc)}">
-${post.images && post.images[0] ? `<meta property="og:image" content="${escapeHtml(post.images[0])}">` : ''}
+${post.images && post.images[0] ? `<meta property="og:image" content="${escapeHtml(toAbsoluteUrl(post.images[0]))}">` : ''}
 <meta property="og:type" content="article">
 <link rel="canonical" href="${SITE_URL}/posts/${post.slug}/">
 ${HEAD_FONTS}
@@ -851,6 +859,14 @@ function build() {
   const assetsDir = path.join(__dirname, 'assets');
   if (fs.existsSync(assetsDir)) {
     copyDirRecursive(assetsDir, path.join(DIST, 'assets'));
+  }
+
+  // Copy locally-mirrored journal images (one folder per post slug). These are
+  // committed by journal-publisher.js so the journal doesn't depend on the
+  // ~5-day expiry of Instagram CDN URLs.
+  const journalImagesDir = path.join(__dirname, 'journal-images');
+  if (fs.existsSync(journalImagesDir)) {
+    copyDirRecursive(journalImagesDir, path.join(DIST, 'journal-images'));
   }
 
   const posts = loadPosts();
