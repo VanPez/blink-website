@@ -663,23 +663,26 @@ function buildJournalPages(posts) {
 
     const cardsHtml = pagePosts.map(p => postCardHtml(p, basePath)).join('\n');
 
+    // Root-absolute hrefs so links resolve correctly from any depth.
+    // (Previously used relative paths that broke on /journal/page/N/ — clicking
+    // a second time would land on /journal/page/journal/page/X/ and 404.)
+    const pageUrl = (n) => (n === 1 ? '/journal/' : `/journal/page/${n}/`);
+
     let paginationHtml = '';
     if (totalPages > 1) {
       const items = [];
       if (page > 1) {
-        const prevHref = page === 2 ? '../journal/index.html' : `../journal/page/${page - 1}/index.html`;
-        items.push(`<a href="${prevHref}">&larr; Newer</a>`);
+        items.push(`<a href="${pageUrl(page - 1)}">&larr; Newer</a>`);
       }
       for (let i = 1; i <= totalPages; i++) {
-        const href = i === 1 ? '../journal/index.html' : `../journal/page/${i}/index.html`;
         if (i === page) {
           items.push(`<span class="current">${i}</span>`);
         } else {
-          items.push(`<a href="${href}">${i}</a>`);
+          items.push(`<a href="${pageUrl(i)}">${i}</a>`);
         }
       }
       if (page < totalPages) {
-        items.push(`<a href="../journal/page/${page + 1}/index.html">Older &rarr;</a>`);
+        items.push(`<a href="${pageUrl(page + 1)}">Older &rarr;</a>`);
       }
       paginationHtml = `<div class="pagination">${items.join('\n')}</div>`;
     }
@@ -695,8 +698,8 @@ function buildJournalPages(posts) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${seoTitle}</title>
 <meta name="description" content="Stories from Blink — a concept store in Ibiza and Formentera curating slow fashion, natural fabrics, and island style.">
-${page > 1 ? `<link rel="prev" href="${page === 2 ? '../journal/index.html' : `../journal/page/${page - 1}/index.html`}">` : ''}
-${page < totalPages ? `<link rel="next" href="../journal/page/${page + 1}/index.html">` : ''}
+${page > 1 ? `<link rel="prev" href="${pageUrl(page - 1)}">` : ''}
+${page < totalPages ? `<link rel="next" href="${pageUrl(page + 1)}">` : ''}
 <link rel="canonical" href="${SITE_URL}/journal/${isFirst ? '' : `page/${page}/`}">
 ${HEAD_FONTS}
 <style>
