@@ -111,6 +111,14 @@ const HEAD_FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">`;
 
+const HEAD_ICONS = `<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#38BCD4">`;
+
 const CSS_VARS = `
 :root {
   --cyan: #38BCD4;
@@ -610,6 +618,7 @@ function buildPostPage(post, prevPost, nextPost) {
 ${post.images && post.images[0] ? `<meta property="og:image" content="${escapeHtml(toAbsoluteUrl(post.images[0]))}">` : ''}
 <meta property="og:type" content="article">
 <link rel="canonical" href="${SITE_URL}/posts/${post.slug}/">
+${HEAD_ICONS}
 ${HEAD_FONTS}
 <style>
 ${CSS_VARS}
@@ -701,6 +710,7 @@ function buildJournalPages(posts) {
 ${page > 1 ? `<link rel="prev" href="${pageUrl(page - 1)}">` : ''}
 ${page < totalPages ? `<link rel="next" href="${pageUrl(page + 1)}">` : ''}
 <link rel="canonical" href="${SITE_URL}/journal/${isFirst ? '' : `page/${page}/`}">
+${HEAD_ICONS}
 ${HEAD_FONTS}
 <style>
 ${CSS_VARS}
@@ -870,6 +880,17 @@ function build() {
   const journalImagesDir = path.join(__dirname, 'journal-images');
   if (fs.existsSync(journalImagesDir)) {
     copyDirRecursive(journalImagesDir, path.join(DIST, 'journal-images'));
+  }
+
+  // Copy favicons, apple-touch-icon, PWA manifest and icons to the dist root
+  // so browsers find /favicon.ico, /apple-touch-icon.png, /manifest.webmanifest etc.
+  const iconsDir = path.join(__dirname, 'icons');
+  if (fs.existsSync(iconsDir)) {
+    for (const entry of fs.readdirSync(iconsDir, { withFileTypes: true })) {
+      if (entry.isFile()) {
+        fs.copyFileSync(path.join(iconsDir, entry.name), path.join(DIST, entry.name));
+      }
+    }
   }
 
   const posts = loadPosts();
