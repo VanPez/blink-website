@@ -214,6 +214,7 @@ footer {
 }
 @media (max-width: 900px) {
   footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 0.75rem 1.25rem; padding: 0; }
 }
 `;
 
