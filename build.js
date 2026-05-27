@@ -535,6 +535,7 @@ function footerHtml(basePath = '') {
     <li><a href="${prefix}/index.html#shop">Shop</a></li>
     <li><a href="${prefix}/journal/index.html">Journal</a></li>
     <li><a href="${prefix}/index.html#stores">Stores</a></li>
+    <li><a href="/privacy.html">Privacy</a></li>
   </ul>
   <p class="footer-copy">&copy; ${new Date().getFullYear()} Blink Ibiza &amp; Formentera</p>
 </footer>`;
@@ -800,6 +801,17 @@ function buildMainSite() {
   fs.writeFileSync(path.join(DIST, 'index.html'), html);
 }
 
+// ─── Copy standalone Privacy & Legal page ───────────────────────────────────
+
+function buildPrivacy() {
+  const srcPath = path.join(__dirname, 'privacy.html');
+  if (!fs.existsSync(srcPath)) {
+    console.warn('No privacy.html found — skipping privacy page copy.');
+    return;
+  }
+  fs.copyFileSync(srcPath, path.join(DIST, 'privacy.html'));
+}
+
 // ─── Generate sitemap.xml ───────────────────────────────────────────────────
 
 function buildSitemap(posts) {
@@ -908,6 +920,9 @@ function build() {
 
   // Build main site (copy + inject nav)
   buildMainSite();
+
+  // Standalone Privacy & Legal page
+  buildPrivacy();
 
   // SEO files
   buildSitemap(posts);
